@@ -2,160 +2,334 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <meta name="viewport"
+          content="width=device-width,
+                   initial-scale=1.0,
+                   maximum-scale=1.0,
+                   user-scalable=no">
+
     <title>V4.5-PRO Komuta Merkezi</title>
-    <!-- Telegram Mini App Bağlantısı -->
+
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
     <style>
         :root {
-            --bg-color: #0d0e12;
-            --card-bg: #16181f;
-            --text-main: #e0e6ed;
-            --text-muted: #8b949e;
-            --neon-green: #00ff88;
-            --neon-red: #ff3366;
-            --ice-blue: #00e5ff;
+            --bg: #0d0e12;
+            --card: #171920;
+            --card2: #1d2028;
+            --text: #e8edf3;
+            --muted: #8b949e;
+            --blue: #00e5ff;
+            --green: #00ff88;
+            --red: #ff426d;
+            --yellow: #ffd166;
         }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
         body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             margin: 0;
             padding: 16px;
-            box-sizing: border-box;
+            background: var(--bg);
+            color: var(--text);
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Roboto,
+                Arial,
+                sans-serif;
         }
+
         .header {
             text-align: center;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
-        .header h1 {
-            font-size: 20px;
-            color: var(--ice-blue);
-            margin: 0 0 4px 0;
+
+        .logo {
+            font-size: 34px;
+            margin-bottom: 4px;
+        }
+
+        .title {
+            color: var(--blue);
+            font-size: 21px;
+            font-weight: 800;
             letter-spacing: 1px;
         }
-        .header p {
-            margin: 0;
+
+        .subtitle {
+            color: var(--muted);
             font-size: 12px;
-            color: var(--text-muted);
+            margin-top: 5px;
         }
-        .card {
-            background-color: var(--card-bg);
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 16px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-        .balance-title {
-            font-size: 14px;
-            color: var(--text-muted);
-            margin-bottom: 8px;
-        }
-        .balance-amount {
-            font-size: 32px;
-            font-weight: bold;
-            margin-bottom: 16px;
-            letter-spacing: -0.5px;
-        }
-        .progress-bar-container {
-            width: 100%;
-            height: 12px;
-            background-color: #2a2d36;
-            border-radius: 6px;
-            overflow: hidden;
+
+        .status {
             display: flex;
-            margin-bottom: 12px;
+            justify-content: center;
+            align-items: center;
+            gap: 7px;
+            margin-top: 10px;
+            font-size: 12px;
+            color: var(--green);
         }
-        .progress-capa {
-            height: 100%;
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--green);
+            box-shadow: 0 0 8px var(--green);
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid rgba(255,255,255,.06);
+            border-radius: 17px;
+            padding: 18px;
+            margin-bottom: 14px;
+            box-shadow: 0 6px 20px rgba(0,0,0,.25);
+        }
+
+        .balance-label {
+            color: var(--muted);
+            font-size: 12px;
+            margin-bottom: 7px;
+        }
+
+        .balance {
+            font-size: 30px;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        .balance span {
+            font-size: 14px;
+            color: var(--muted);
+            font-weight: 500;
+        }
+
+        .bar {
+            height: 12px;
+            display: flex;
+            overflow: hidden;
+            border-radius: 8px;
+            background: #292c35;
+        }
+
+        .capa {
             width: 70%;
-            background-color: var(--neon-green);
+            background: var(--green);
         }
-        .progress-roket {
-            height: 100%;
+
+        .roket {
             width: 30%;
-            background-color: var(--neon-red);
+            background: var(--red);
         }
+
         .legend {
             display: flex;
             justify-content: space-between;
+            margin-top: 9px;
             font-size: 12px;
+            color: var(--muted);
         }
-        .legend-item { display: flex; align-items: center; gap: 6px; }
-        .dot { width: 8px; height: 8px; border-radius: 50%; }
-        .dot-green { background-color: var(--neon-green); }
-        .dot-red { background-color: var(--neon-red); }
-        
-        .grid-buttons {
+
+        .grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
         }
-        .btn {
-            background-color: var(--card-bg);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: var(--text-main);
-            padding: 16px 12px;
-            border-radius: 12px;
+
+        button {
+            width: 100%;
+            min-height: 100px;
+            border: 1px solid rgba(255,255,255,.08);
+            border-radius: 15px;
+            background: var(--card);
+            color: var(--text);
             font-size: 14px;
-            font-weight: 600;
+            font-weight: 700;
+            cursor: pointer;
+            transition: .15s;
+        }
+
+        button:active {
+            transform: scale(.97);
+            background: var(--card2);
+        }
+
+        .icon {
+            display: block;
+            font-size: 28px;
+            margin-bottom: 9px;
+        }
+
+        .radar {
+            border-color: rgba(0,229,255,.25);
+        }
+
+        .vip {
+            border-color: rgba(0,255,136,.20);
+        }
+
+        .log {
+            border-color: rgba(255,209,102,.20);
+        }
+
+        .kill {
+            border-color: rgba(255,66,109,.35);
+            color: var(--red);
+        }
+
+        .info {
+            color: var(--muted);
             text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.2s ease;
-        }
-        .btn:active {
-            background-color: #2a2d36;
-            border-color: var(--ice-blue);
-        }
-        .btn-kill {
-            border-color: rgba(255, 51, 102, 0.3);
-            color: var(--neon-red);
+            font-size: 11px;
+            line-height: 1.5;
+            margin-top: 15px;
         }
     </style>
 </head>
+
 <body>
 
     <div class="header">
-        <h1>V4.5-PRO CORE</h1>
-        <p>Protokol: Ali Boztaş | Otonom Avcılık</p>
+
+        <div class="logo">🚀</div>
+
+        <div class="title">
+            V4.5-PRO CORE
+        </div>
+
+        <div class="subtitle">
+            Test Komuta Merkezi
+        </div>
+
+        <div class="status">
+            <div class="status-dot"></div>
+            TEST MODU AKTİF
+        </div>
+
     </div>
+
 
     <div class="card">
-        <div class="balance-title">TOPLAM KASA</div>
-        <div class="balance-amount">10,000.00 <span style="font-size:16px; color:#8b949e;">USDT</span></div>
-        
-        <div class="progress-bar-container">
-            <div class="progress-capa"></div>
-            <div class="progress-roket"></div>
+
+        <div class="balance-label">
+            TEST KASASI
         </div>
-        
+
+        <div class="balance">
+            10,000.00
+            <span>USDT</span>
+        </div>
+
+        <div class="bar">
+            <div class="capa"></div>
+            <div class="roket"></div>
+        </div>
+
         <div class="legend">
-            <div class="legend-item"><div class="dot dot-green"></div>Çapa (%70)</div>
-            <div class="legend-item"><div class="dot dot-red"></div>Roket (%30)</div>
+            <div>🟢 Çapa %70</div>
+            <div>🔴 Roket %30</div>
         </div>
+
     </div>
 
-    <div class="grid-buttons">
-        <div class="btn" onclick="sendTelegramAction('radar')">🚀 Fırsat Radarı</div>
-        <div class="btn" onclick="sendTelegramAction('vip')">💼 VIP Portföy</div>
-        <div class="btn" onclick="sendTelegramAction('log')">📝 Trade Log</div>
-        <div class="btn btn-kill" onclick="sendTelegramAction('kill')">🛑 ACİL NAKİT</div>
+
+    <div class="grid">
+
+        <button class="radar"
+                onclick="sendAction('radar')">
+
+            <span class="icon">🚀</span>
+            Fırsat Radarı
+
+        </button>
+
+
+        <button class="vip"
+                onclick="sendAction('vip')">
+
+            <span class="icon">💼</span>
+            VIP Portföy
+
+        </button>
+
+
+        <button class="log"
+                onclick="sendAction('log')">
+
+            <span class="icon">📝</span>
+            Trade Log
+
+        </button>
+
+
+        <button class="kill"
+                onclick="sendAction('kill')">
+
+            <span class="icon">🛑</span>
+            ACİL NAKİT
+
+        </button>
+
     </div>
 
-    <script>
-        // Telegram Mini App arayüzünü başlatır
-        const tg = window.Telegram.WebApp;
-        tg.expand(); // Uygulamayı tam ekran açar
-        tg.ready();
 
-        // Butonlara tıklandığında robota sinyal gönderen fonksiyon
-        function sendTelegramAction(action) {
+    <div class="info">
+        V4.5-PRO test sürümü.<br>
+        Gerçek emir gönderilmez.
+    </div>
+
+
+<script>
+
+    const tg = window.Telegram.WebApp;
+
+    tg.ready();
+    tg.expand();
+
+
+    function sendAction(action) {
+
+        const actionNames = {
+            radar: "Fırsat Radarı",
+            vip: "VIP Portföy",
+            log: "Trade Log",
+            kill: "ACİL NAKİT"
+        };
+
+        const name = actionNames[action] || action;
+
+        /*
+         * Telegram'a komutu gönderiyoruz.
+         * Colab'daki bot bu veriyi yakalayacak.
+         */
+
+        tg.showPopup({
+            title: "V4.5-PRO",
+            message: name + " komutu gönderiliyor...",
+            buttons: [
+                {
+                    id: "ok",
+                    type: "default",
+                    text: "Gönder"
+                }
+            ]
+        }, function () {
+
             tg.sendData(action);
-        }
-    </script>
+
+        });
+    }
+
+</script>
+
 </body>
 </html>
